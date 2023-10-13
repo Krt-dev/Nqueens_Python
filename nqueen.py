@@ -21,30 +21,30 @@ def solve_n_queens(N):
 
     def backtrack(row):
         if row == N:
-            return True
+            solutions.append(["".join(row) for row in board])
+            return
         for col in range(N):
             if is_safe(board, row, col, N):
                 board[row][col] = "Q"
-                if backtrack(row + 1):
-                    return True
+                backtrack(row + 1)
                 board[row][col] = "."
 
-    if backtrack(0):
-        return ["[".join(row) + "]" for row in board]
-    else:
-        return None
+    solutions = []
+    backtrack(0)
+    return solutions
 
 def display_solution(solution):
-    if solution:
-        for row in solution:
-            print(row)
-        print()
-    else:
-        print("No solution found.")
+    for row in solution:
+        print("[" + "][".join(row) + "]")
+    print()
 
 if __name__ == "__main__":
     N = int(input("Enter the board size (N): "))
-    solution = solve_n_queens(N)
+    solutions = solve_n_queens(N)
     
-    print(f"Solution for {N}-Queens:")
-    display_solution(solution)
+    if solutions:
+        print(f"Found {len(solutions)} solution(s) for {N}-Queens:")
+        for solution in solutions:
+            display_solution(solution)
+    else:
+        print(f"No solutions found for {N}-Queens.")
